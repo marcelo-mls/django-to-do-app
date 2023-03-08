@@ -1,0 +1,15 @@
+commitizen==2.42.1
+argcomplete==2.0.6
+charset-normalizer==2.1.1
+colorama==0.4.6
+decli==0.5.2
+Jinja2==3.1.2
+MarkupSafe==2.1.2
+packaging==23.0
+prompt-toolkit==3.0.38
+PyYAML==6.0
+questionary==1.10.0
+termcolor==2.2.0
+tomlkit==0.11.6
+typing_extensions==4.5.0
+wcwidth==0.2.6
