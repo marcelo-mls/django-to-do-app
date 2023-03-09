@@ -1,3 +1,4 @@
+-r requirements.txt
 commitizen==2.42.1
 argcomplete==2.0.6
 charset-normalizer==2.1.1
