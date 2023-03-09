@@ -7,23 +7,19 @@
   <title>To Do App</title>
 </head>
 <body>
-  <h1>To-do List</h1>
+  <h1>Update Task</h1>
 
-  <form method="POST" actions="/">
+  <form method="POST" actions="">
     {% csrf_token %}
-    {{ form.title }}
-    <input type="submit" name="Create Task" />
+    {{ form }}
+    <input type="submit" name="Update Task" />
   </form>
 
-  <ul>
   {% for each_task in tasks %}
-    <li>
-      <div>
-        <p>{{each_task}}</p>
-        <a href="{% url 'update_task' each_task.id %}">Update</a>
-      </div>
-    </li>
+    <div>
+      <p>{{each_task}}</p>
+    </div>
   {% endfor %}
-  </ul>
+
 </body>
 </html>
