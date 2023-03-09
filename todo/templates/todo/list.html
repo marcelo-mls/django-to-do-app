@@ -7,14 +7,18 @@
   <title>To Do App</title>
 </head>
 <body>
-  <h1>Hello, World!</h1>
+  <h1>To-do List</h1>
+
+  <form method="POST" actions="/">
+    {% csrf_token %}
+    {{ form.title }}
+    <input type="submit" name="Create Task" />
+  </form>
 
   {% for each_task in tasks %}
-
     <div>
       <p>{{each_task}}</p>
     </div>
-
   {% endfor %}
 
 </body>
