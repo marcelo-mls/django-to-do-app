@@ -7,12 +7,15 @@
   <title>To Do App</title>
 </head>
 <body>
-  <h1>Update Task</h1>
+  <h1>Delete Task</h1>
+
+  <p>Are you sure you want to delete <b>"{{ task }}"</b>?</p>
+  <a href="{% url 'list' %}">Cancel</a>
 
   <form method="POST" actions="">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" name="Update Task" />
+    <input type="submit" name="Confirm" />
   </form>
 
 </body>

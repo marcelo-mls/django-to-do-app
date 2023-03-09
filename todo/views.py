@@ -26,7 +26,18 @@ def updateTask(request, pk):
         form = forms.TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-        return redirect("/")
+            return redirect("/")
 
     context = {"form": form}
     return render(request, "todo/update.html", context)
+
+
+def deleteTask(request, pk):
+    task = models.Task.objects.get(id=pk)
+
+    if request.method == "POST":
+        task.delete()
+        return redirect("/")
+
+    context = {"task": task}
+    return render(request, "todo/delete.html", context)

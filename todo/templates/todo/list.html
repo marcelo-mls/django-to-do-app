@@ -9,7 +9,7 @@
 <body>
   <h1>To-do List</h1>
 
-  <form method="POST" actions="/">
+  <form method="POST" actions="">
     {% csrf_token %}
     {{ form.title }}
     <input type="submit" name="Create Task" />
@@ -21,6 +21,7 @@
       <div>
         <p>{{each_task}}</p>
         <a href="{% url 'update_task' each_task.id %}">Update</a>
+        <a href="{% url 'delete_task' each_task.id %}">Delete</a>
       </div>
     </li>
   {% endfor %}
