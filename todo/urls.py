@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path  # , include
+# from rest_framework import routers
 
-from . import views
+from todo.views import apiOverview  # , TaskViewSet
 
+# router = routers.DefaultRouter()
+# router.register(r'tasks', TaskViewSet)
 
 urlpatterns = [
-    path("", views.index, name="list"),
-    path("update/<int:pk>/", views.updateTask, name="update_task"),
-    path("delete/<int:pk>/", views.deleteTask, name="delete_task"),
+    path("", apiOverview),
+    # path("api/", include(router.urls))
 ]
