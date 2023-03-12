@@ -1,43 +1,21 @@
-from django.shortcuts import render, redirect
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+# from rest_framework import viewsets
 
-from . import models
-from . import forms
-
-
-def index(request):
-    tasks = models.Task.objects.all()
-    form = forms.TaskForm()
-
-    if request.method == "POST":
-        form = forms.TaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect("/")
-
-    context = {"tasks": tasks, "form": form}
-    return render(request, "todo/list.html", context)
+from todo.models import Task
 
 
-def updateTask(request, pk):
-    task = models.Task.objects.get(id=pk)
-    form = forms.TaskForm(instance=task)
-
-    if request.method == "POST":
-        form = forms.TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            return redirect("/")
-
-    context = {"form": form}
-    return render(request, "todo/update.html", context)
+@api_view(["GET"])
+def apiOverview(request):
+    api_urls = {
+        "List": "/task-list/",
+        "Details": "/task-details/<str:pk>/",
+        "Create": "/task-create/",
+        "Update": "/task-update/<str:pk>/",
+        "Delete": "/task-delete/<str:pk>/",
+    }
+    return Response(api_urls)
 
 
-def deleteTask(request, pk):
-    task = models.Task.objects.get(id=pk)
-
-    if request.method == "POST":
-        task.delete()
-        return redirect("/")
-
-    context = {"task": task}
-    return render(request, "todo/delete.html", context)
+# class TaskViewSet(viewsets.ModelViewSet):
+#     queryset = Task.objects.all()
