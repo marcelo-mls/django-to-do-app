@@ -1,43 +1,68 @@
-from django.shortcuts import render, redirect
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-from . import models
-from . import forms
+# from rest_framework import viewsets
 
+from todo.models import Task
+from todo.serializers import TaskSerializer
 
-def index(request):
-    tasks = models.Task.objects.all()
-    form = forms.TaskForm()
-
-    if request.method == "POST":
-        form = forms.TaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect("/")
-
-    context = {"tasks": tasks, "form": form}
-    return render(request, "todo/list.html", context)
+# class TaskViewSet(viewsets.ModelViewSet):
+#     queryset = Task.objects.all()
 
 
-def updateTask(request, pk):
-    task = models.Task.objects.get(id=pk)
-    form = forms.TaskForm(instance=task)
+@api_view(["GET"])
+def apiOverview(request):
+    api_urls = {
+        "List": "/task-list/",
+        "Details": "/task-details/<str:pk>/",
+        "Create": "/task-create/",
+        "Update": "/task-update/<str:pk>/",
+        "Delete": "/task-delete/<str:pk>/",
+    }
 
-    if request.method == "POST":
-        form = forms.TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            return redirect("/")
-
-    context = {"form": form}
-    return render(request, "todo/update.html", context)
+    return Response(api_urls)
 
 
-def deleteTask(request, pk):
-    task = models.Task.objects.get(id=pk)
+@api_view(["GET"])
+def taskList(request):
+    tasks = Task.objects.all()
+    serializer = TaskSerializer(tasks, many=True)
 
-    if request.method == "POST":
-        task.delete()
-        return redirect("/")
+    return Response(serializer.data)
 
-    context = {"task": task}
-    return render(request, "todo/delete.html", context)
+
+@api_view(["GET"])
+def taskDetails(request, pk):
+    task = Task.objects.get(id=pk)
+    serializer = TaskSerializer(task, many=False)
+
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+def taskCreate(request):
+    serializer = TaskSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+
+@api_view(["PUT"])
+def taskUpdate(request, pk):
+    task = Task.objects.get(id=pk)
+    serializer = TaskSerializer(instance=task, data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+
+@api_view(["DELETE"])
+def taskDelete(request, pk):
+    task = Task.objects.get(id=pk)
+    task.delete()
+
+    return Response(f'Task {pk} deleted')
